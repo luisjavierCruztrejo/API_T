@@ -1,10 +1,17 @@
+import os
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
+
+from dotenv import load_dotenv  # Importar dotenv
+
+# Cargar las variables de entorno desde el archivo .env
+load_dotenv()
+
 
 app = Flask(__name__)
 
 # Configuración de la base de datos PostgreSQL
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://luis:aslgrAObLF81et9BTIgIPNLXh7UAAT4r@dpg-crfn0g23esus73f3frpg-a.oregon-postgres.render.com:5432/javier_r5d0'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -12,7 +19,7 @@ db = SQLAlchemy(app)
 # Definición del modelo de la tabla 'estudiantes'
 class Estudiante(db.Model):
     __tablename__ = 'alumnos'
-     
+    __table_args__ = {'schema': 'cetech'}  # Especifica el esquema
     no_control = db.Column(db.String, primary_key=True)
     nombre = db.Column(db.String, nullable=True)
     ap_paterno = db.Column(db.String, nullable=True)
